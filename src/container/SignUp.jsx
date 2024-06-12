@@ -18,7 +18,7 @@ const SignUp = () => {
     getEmailValidationStatus,
     setEmailValidationStatus,
   ] = useState(true);
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
   const [alert, setAlert] = useState(false);
   const [alertMsg, setAlertMsg] = useState("");
 
@@ -34,7 +34,13 @@ const SignUp = () => {
             console.log(userCred);
           }
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          console.log(error);
+          setAlertMsg(
+            error.message.replace("Firebase: ", "")
+          );
+          setAlert(true);
+        });
     }
   };
 
@@ -65,9 +71,9 @@ const SignUp = () => {
             setAlertMsg("Something went wrong");
           }
 
-          setInterval(() => {
-            setAlert(false);
-          }, 3000);
+          //  setInterval(() => {
+          //    setAlert(false);
+          //  }, 3000);
         });
     }
   };
@@ -108,7 +114,7 @@ const SignUp = () => {
               <motion.p
                 key={"AlertMessage"}
                 {...fadeInOut}
-                className='text-red-500'
+                className='text-red-500 max-w-[300px] text-sm text-center'
               >
                 {alertMsg}
               </motion.p>
@@ -125,6 +131,7 @@ const SignUp = () => {
             </motion.div>
           ) : (
             <motion.div
+              onClick={loginWithEmailPassword}
               whileTap={{ scale: 0.9 }}
               className='flex items-center justify-center w-full py-3 rounded-xl hover:bg-emerald-400 cursor-pointer bg-emerald-500'
             >
